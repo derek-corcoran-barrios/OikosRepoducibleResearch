@@ -1,0 +1,229 @@
+---
+title: "Reproducible research"
+author: "Derek Corcoran"
+date: "`r format(Sys.time(), '%d/%m, %Y')`"
+output:
+  ioslides_presentation:
+    widescreen: true
+    incremental: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = FALSE, tidy = TRUE, tidy.opts = list(width.cutoff = 50))
+library(tidyverse)
+library(broom)
+library(kableExtra)
+library(crosstalk)
+library(leaflet)
+library(DT)
+library(plotly)
+library(downloadthis)
+options("kableExtra.html.bsTable" = T)
+```
+
+# Introduction
+
+## What is reproducible research?
+
+* Interlaced code, data (**Raw**) and text
+* Repos on github
+* in R: Rmarkdown (Rmd)
+
+```{r, echo = FALSE, out.width = "1000px"}
+knitr::include_graphics("Reproducible.png")
+```
+
+## Reproducibility en R
+
+```{r, echo = F, out.width='30%', fig.align='center'}
+knitr::include_graphics("Rmark.png")
+```
+
+1. A folder
+     + Raw data (csv, xls, html, json)
+     + Code and text (Rmd, shiny)
+     + Results (Manuscript, Web Page, App)
+     
+
+## Some motivation
+
+* The [webpage of a project](https://danish-flora-and-vegetation.github.io/)
+* interactive [plots and documents](https://danish-flora-and-vegetation.github.io/MapAndnmds/map.html). 
+* Presentations with [interactive elements](https://rpubs.com/derek_corcoran/MolsRewild)
+* Full manuscripts
+
+## External Resources
+
+* Rmarkdown the [ultimate guide](https://bookdown.org/yihui/rmarkdown/)
+* [Cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+
+# Objectives
+
+## Objectives
+
+* **Part 1:** Set up the project and rmarkdown basics
+* **Part 2:** getting the most of your rmd by using interactive HTML
+* **Part 3:** Reusing code for presentations and PDfs
+
+# Part 1 Set up the project and rmarkdown basics
+
+## In this part
+
+* Start a new project
+* Generate your github repo
+* Generate your readme file
+* Simple html report
+
+## Start a new project and generate your github repo
+
+```{r usethis, eval = FALSE}
+usethis::use_git()
+# set your credentials if you must
+gitcreds::gitcreds_set()
+# if you dont have a pat you can use
+usethis::create_github_token()
+# if you need add your PAT
+usethis::edit_r_environ()
+# generate your readme
+usethis::use_readme_rmd()
+# Edit and upload to git
+usethis::use_github()
+```
+
+## lets get the dataset
+
+```{r, echo = F}
+Species <- readr::read_csv("Species.csv")
+
+Species %>%
+  download_this(
+    output_name = "Species_dataset",
+    output_extension = ".csv",
+    button_label = "Download data as csv",
+    button_type = "default",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+```
+
+Variables:
+
+* **lon**: Longitude in decimal degrees
+* **Lat**: Latitude in decimal degrees
+* **bio_1** to bio_19 bioclimatic variables as defined in [worldclim](https://www.worldclim.org/data/bioclim.html)
+* **abund_sp1** to abund_sp4: abundance of species 1, 2 and 4
+
+## Basic rmarkdown
+
+## Parts of an Rmd
+
+<div class="columns-2">
+  1. Text
+  2. Chunks
+  3. Inline code
+  4. [Cheat sheet Rmd](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+  5. The magic button **Knit**
+
+```{r, echo = FALSE}
+knitr::include_graphics("RMDexample.png")
+```
+
+</div>
+
+## Text
+
+[link](https://stackoverflow.com/users/3808018/derek-corcoran)
+
+```{r, echo = TRUE, eval=FALSE}
+# Title
+
+## subtitle
+
+*cursive*
+
+**bold**
+
+[link](https://stackoverflow.com/users/3808018/derek-corcoran)
+```
+
+
+## Chunks
+
+```{r}
+knitr::include_graphics("Chunk.png")
+```
+
++ *echo* = T o F show code
++ *message* = T o F shows message of packages
++ *warning* = T o F shows or does not show warning 
++ *eval* = T o F runs or does not run the code
++ *cache* = T o F saves the result or not
++ For more options check this [link](https://yihui.name/knitr/options/)
+
+## Inline code
+
+![Inline](Inline.png)
+
+- Code interlinked with text
+- To update means, maximum, minimum
+- p-values, statistical differences
+- They can be vectors, and not tables.
+
+## State the objective of the project in your readme
+
+```{r, echo = F}
+library(countdown)
+countdown(minutes = 5, seconds = 0)
+```
+
+## First look at the dataset
+
+```{r, echo = F}
+binpal1 <- colorNumeric("viridis", sort(unique(Species$abund_sp1)))
+binpal2 <- colorNumeric("viridis", sort(unique(Species$abund_sp2)))
+binpal4 <- colorNumeric("viridis", sort(unique(Species$abund_sp4)))
+
+leaflet(data = Species) %>%
+  addTiles() %>% 
+  leaflet::addCircles(lng = ~lon, lat = ~lat, group = "Species 1", color = ~binpal1(abund_sp1), popup = ~paste("Abundance Species 1:", prettyNum(abund_sp1, big.mark = ",")), label = ~paste("Abundance Species 1:", prettyNum(abund_sp1, big.mark = ","))) %>%
+    leaflet::addCircles(lng = ~lon, lat = ~lat, group = "Species 2", color = ~binpal2(abund_sp2), popup = ~paste("Abundance Species 2:", prettyNum(abund_sp2, big.mark = ",")), label = ~paste("Abundance Species 2:", prettyNum(abund_sp2, big.mark = ","))) %>%
+    leaflet::addCircles(lng = ~lon, lat = ~lat, group = "Species 4", color = ~binpal4(abund_sp4), popup = ~paste("Abundance Species 4:", prettyNum(abund_sp4, big.mark = ",")), label = ~paste("Abundance Species 4:", prettyNum(abund_sp4, big.mark = ","))) %>% addLegend("bottomright", pal = binpal1, values = ~abund_sp1,
+    title = "Abundance spp1",
+    labFormat = labelFormat(big.mark =","),
+    opacity = 1,
+    group = "Species 1"
+  ) %>%
+  addLegend("bottomright", pal = binpal2, values = ~abund_sp2,
+    title = "Abundance spp2",
+    labFormat = labelFormat(big.mark =","),
+    opacity = 1,
+    group = "Species 2"
+  ) %>%
+  addLegend("bottomright", pal = binpal4, values = ~abund_sp4,
+    title = "Abundance spp4",
+    labFormat = labelFormat(big.mark =","),
+    opacity = 1,
+    group = "Species 4"
+  )  %>% 
+   addLayersControl(
+    overlayGroups = c("Species 1", "Species 2", "Species 4"),
+    options = layersControlOptions(collapsed = T)
+  ) %>% 
+  hideGroup("Species 2") %>% 
+  hideGroup("Species 4")
+```
+
+## First look at the dataset (cont.)
+
+```{r, echo = F}
+Species2 <- Species %>% 
+  pivot_longer(cols = abund_sp1:abund_sp4, names_to = "Species", values_to = "Abundance") %>% mutate(Species = str_remove_all(Species, "abund_"), Species =str_replace_all(Species, "sp", "Spp "))
+
+G1 <- ggplot(Species2, aes(x = bio_1, y = Abundance)) + geom_point() + geom_smooth() + facet_wrap(~Species, scales = "free_y") + theme_bw()
+
+ggplotly(G1)
+```
+
+# First html report
+
+## Basic rmarkdown
