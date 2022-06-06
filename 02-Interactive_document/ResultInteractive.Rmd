@@ -1,0 +1,43 @@
+---
+title: "Explore relationships"
+author: "Derek Corcoran"
+date: "`r format(Sys.time(), '%d/%m, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, error = FALSE)
+library(tidyverse)
+library(DT)
+library(leaflet)
+library(crosstalk)
+library(plotly)
+
+library(readr)
+Species <- read_csv("https://raw.githubusercontent.com/derek-corcoran-barrios/OikosRepoducibleResearch/master/Species.csv")
+
+Species2 <- Species %>% 
+  pivot_longer(cols = abund_sp1:abund_sp4, names_to = "Species", values_to = "Abundance") %>% mutate(Species = str_remove_all(Species, "abund_"), Species =str_replace_all(Species, "sp", "Spp "))
+
+
+Species3 <- Species2 %>% pivot_longer(cols = starts_with("bio"), names_to = "Variable", values_to = "Measure")
+```
+
+```{r}
+sd <- SharedData$new(Species3)
+```
+
+
+```{r}
+crosstalk::filter_select("Variable", "Variable", sd, ~Variable, multiple = F)
+```
+
+
+```{r}
+crosstalk::filter_checkbox("Species", "Species", sd, ~Species)
+
+g <- ggplot(sd, aes(x = Measure, y = Abundance)) + geom_point(aes(color = Species)) + geom_smooth(aes(color = Species)) + theme_bw()
+ggplotly(g)
+```
+
+

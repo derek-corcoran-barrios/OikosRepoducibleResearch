@@ -316,4 +316,83 @@ Test  %>%   formatRound(columns=c("lon", "lat", "bio_1", "bio_2", "bio_3", "bio_
 
 * For more examples [check DT](https://rstudio.github.io/DT/)
 
-## The basics of ggplot
+## The basics of plotly
+
+* if you know how to use ggplot, you can use plotly
+
+```{r, echo = T}
+Species2 <- Species %>% 
+  pivot_longer(cols = abund_sp1:abund_sp4, names_to = "Species", values_to = "Abundance") %>% mutate(Species = str_remove_all(Species, "abund_"), Species =str_replace_all(Species, "sp", "Spp "))
+```
+
+## ggplotly
+
+```{r, echo = T, eval = F}
+G <- ggplot(Species2, aes(x = bio_12, y = Abundance)) + 
+  geom_point(aes(color = Species)) +
+  geom_smooth(aes(color = Species)) + 
+  theme_bw()
+
+ggplotly(G)
+```
+
+## The graph
+
+```{r, echo = F}
+G <- ggplot(Species2, aes(x = bio_12, y = Abundance)) + 
+  geom_point(aes(color = Species)) +
+  geom_smooth(aes(color = Species)) + 
+  theme_bw()
+
+ggplotly(G)
+```
+
+## More control with plotly
+
+* View [plotly website](https://plotly.com/r/)
+
+```{r, echo = F}
+## Create a function
+create_buttons <- function(df, x_axis_var_names) {
+  lapply(
+    x_axis_var_names,
+    FUN = function(var_name, df) {
+      button <- list(
+        method = 'restyle',
+        args = list('x', list(df[, var_name])),
+        label = sprintf('x axis %s', var_name)
+      )
+    },
+    df
+  )
+  
+}
+
+y_axis_var_names <- c("bio_1", "bio_2", "bio_3", "bio_4", "bio_5", "bio_6",
+                      "bio_7", "bio_8", "bio_9", "bio_10", "bio_11", "bio_12", "bio_13",
+                      "bio_14", "bio_15", "bio_16", "bio_17", "bio_18", "bio_19")
+
+p <- plot_ly(Species, x = ~bio_1, y = ~abund_sp4, mode = "markers", name = "A", visible = T) %>%
+  layout(
+    yaxis = list(title = "Abundance"),
+    xaxis = list(title = "x variable"),
+    updatemenus = list(
+      list(
+        y = 0.7,
+        buttons = create_buttons(Species, y_axis_var_names)
+      )
+    ))
+p
+```
+
+## Basics of leaflet
+
+```{r}
+leaflet(data = Species) %>% 
+  addTiles() %>% 
+  addCircles(lng = ~lon, lat =~lat)
+```
+
+## Basics of crosswalk
+
+* you need to add
