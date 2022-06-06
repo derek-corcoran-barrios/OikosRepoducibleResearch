@@ -147,7 +147,7 @@ knitr::include_graphics("RMDexample.png")
 
 ## Chunks
 
-```{r}
+```{r, echo = F}
 knitr::include_graphics("Chunk.png")
 ```
 
@@ -244,3 +244,76 @@ Get the template in this [link](https://raw.githubusercontent.com/derek-corcoran
 * Generate graphs and tables for your project and make crossreferences
 * Change the style of your bibliography using [csl](https://www.zotero.org/styles)
 * Until 10 am
+
+# Part 2: getting the most of your rmd by using interactive HTML
+
+## In this part
+
+* Generate interactive tables with *DT*
+* Generate interactive plots with *plotly*
+* Generate interactive maps with *leaflet*
+* Let them comunicate through *crosstalk*
+
+## The basics of DT
+
+At its most basic you just need to do:
+
+```{r, echo = T}
+DT::datatable(Species)
+```
+
+## Add some extra
+
+```{r, echo = F}
+DT::datatable(Species, extensions = c('Buttons', 'ColReorder'),
+          caption = 'Species abundances and explaining variables.',
+            filter = "top",
+            options = list(dom = 'Blfrtip',
+                            colReorder = TRUE,
+                          scrollX='400px',
+                           scrollY='200px',
+                           buttons = c('copy', 'csv', 'excel', I('colvis')),
+                           lengthMenu = list(c(10,25,50,-1),
+                                             c(10,25,50,"All")))) %>%
+    formatRound(columns=c("lon", "lat", "bio_1", "bio_2", "bio_3", "bio_4", "bio_5", 
+"bio_6", "bio_7", "bio_8", "bio_9", "bio_10", "bio_11", "bio_12", 
+"bio_13", "bio_14", "bio_15", "bio_16", "bio_17", "bio_18", "bio_19", 
+"abund_sp1", "abund_sp2", "abund_sp4"), digits=3)
+```
+
+## Lets check the code
+
+```{r, echo = T, eval = F}
+# Extensions to reorder columns and to add buttons
+Test <- DT::datatable(Species, extensions = c('Buttons', 'ColReorder'),
+          caption = 'Species abundances and explaining variables.',
+          ## You can filter the data on top
+            filter = "top",
+          ## https://datatables.net/reference/option/dom
+            options = list(dom = 'Blfrtip',
+          ## you can reorder columns
+                            colReorder = TRUE,
+          ## You can scroll de table
+                          scrollX='400px',
+                           scrollY='200px',
+          ## you can download or take away variables
+                           buttons = c('copy', 'csv', 'excel', I('colvis')),
+          ### how long you can make tables
+                           lengthMenu = list(c(10,25,50,-1),
+                                             c(10,25,50,"All"))))
+```
+
+## Continued
+
+```{r, echo = T, eval=FALSE}
+
+# round the digits of these columns
+Test  %>%   formatRound(columns=c("lon", "lat", "bio_1", "bio_2", "bio_3", "bio_4", "bio_5", 
+"bio_6", "bio_7", "bio_8", "bio_9", "bio_10", "bio_11", "bio_12", 
+"bio_13", "bio_14", "bio_15", "bio_16", "bio_17", "bio_18", "bio_19", 
+"abund_sp1", "abund_sp2", "abund_sp4"), digits=3)
+```
+
+* For more examples [check DT](https://rstudio.github.io/DT/)
+
+## The basics of ggplot
