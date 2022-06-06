@@ -116,7 +116,6 @@ Variables:
 
 ## Basic rmarkdown
 
-<div class="columns-2">
   1. Text
   2. Chunks
   3. Inline code
@@ -128,7 +127,8 @@ Variables:
 knitr::include_graphics("RMDexample.png")
 ```
 
-</div>
+
+## Text
 
 [link](https://stackoverflow.com/users/3808018/derek-corcoran)
 
@@ -168,6 +168,11 @@ knitr::include_graphics("Chunk.png")
 - They can be vectors, and not tables.
 
 ## State the objective of the project in your readme
+
+* include a chunk
+* include an inline code
+* include a graph
+* try to include a table
 
 ```{r, echo = F}
 library(countdown)
@@ -226,3 +231,16 @@ ggplotly(G1)
 
 ## More advanced rmarkdown
 
+Get the template in this [link](https://raw.githubusercontent.com/derek-corcoran-barrios/OikosRepoducibleResearch/master/01-FirstHtml/Template1.Rmd)
+
+* Includes the use of references
+* Crossrefences of tables, figures, equations, etc
+* More in the [bookdown package gitbook](https://bookdown.org/yihui/bookdown/)
+* Includes example of the [kableExtra package](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html)
+
+## Second activity
+
+* Document in your readme the creation of this document and it's objective
+* Generate graphs and tables for your project and make crossreferences
+* Change the style of your bibliography using [csl](https://www.zotero.org/styles)
+* Until 10 am

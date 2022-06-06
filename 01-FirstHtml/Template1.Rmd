@@ -1,30 +1,37 @@
 ---
 title: "Template HTML"
 author: "Some author"
-date: "6/6/2022"
-output: html_document
+date: "`r format(Sys.time(), '%d/%m, %Y')`"
+output:
+  bookdown::html_document2:
+    fig_caption: true
+    toc: false
+bibliography: biblio.bib
+csl: ecology.csl
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, warning = F, message = F)
+library(tidyverse)
+library(kableExtra)
 ```
 
-## R Markdown
+# Example
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This is a template rmd with extended functionality thanks to the use of bookdown [@Xie_2016]. The use of references is not an enhancement, however the use of crossreferences to show figures and tables is only possible with this package.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+As an example check figure \@ref(fig:mpg), and table \@ref(tab:mtcars).
 
-```{r cars}
-summary(cars)
+```{r mpg, fig.cap= "This graph shows the relationship between the miles per galon of a car and their horsepower"}
+data("mtcars")
+ggplot(mtcars, aes(x = hp, y = mpg)) + geom_point() + geom_smooth(method = "lm") + theme_bw()
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r mtcars}
+kbl(mtcars, caption = "A nice table of mtcars") %>% 
+  kable_paper() %>% 
+  scroll_box(width = "800px", height = "500px")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# References
