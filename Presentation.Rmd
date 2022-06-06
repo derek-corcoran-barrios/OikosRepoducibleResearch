@@ -113,9 +113,8 @@ Variables:
 * **bio_1** to bio_19 bioclimatic variables as defined in [worldclim](https://www.worldclim.org/data/bioclim.html)
 * **abund_sp1** to abund_sp4: abundance of species 1, 2 and 4
 
-## Basic rmarkdown
 
-## Parts of an Rmd
+## Basic rmarkdown
 
 <div class="columns-2">
   1. Text
@@ -123,14 +122,13 @@ Variables:
   3. Inline code
   4. [Cheat sheet Rmd](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
   5. The magic button **Knit**
+  
 
 ```{r, echo = FALSE}
 knitr::include_graphics("RMDexample.png")
 ```
 
 </div>
-
-## Text
 
 [link](https://stackoverflow.com/users/3808018/derek-corcoran)
 
@@ -226,4 +224,5 @@ ggplotly(G1)
 
 # First html report
 
-## Basic rmarkdown
+## More advanced rmarkdown
+
