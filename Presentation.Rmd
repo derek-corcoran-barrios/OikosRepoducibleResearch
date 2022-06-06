@@ -395,4 +395,21 @@ leaflet(data = Species) %>%
 
 ## Basics of crosswalk
 
-* you need to add
+* you need to add a dataframe or data frame like object into a shared data:
+
+```{r, echo = T}
+sd <- SharedData$new(Species2)
+```
+
+
+## Generate filters
+
+```{r, echo = T}
+crosstalk::filter_checkbox("Species", "Species", sd, ~Species)
+crosstalk::filter_slider("Abundance", "Abundance", sd, ~Abundance, step = 10, round = T, min = min(Species2$Abundance), max = max(Species2$Abundance))
+
+```
+
+## And widgets
+
+Check the template in 
