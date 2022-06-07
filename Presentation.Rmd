@@ -23,6 +23,11 @@ options("kableExtra.html.bsTable" = T)
 
 # Introduction
 
+## Where everything is
+
+* You can find all in the following [github](https://github.com/derek-corcoran-barrios/OikosRepoducibleResearch)
+* And here is the link to the [presentation](https://rpubs.com/derek_corcoran/Oikos_Reproducible_Research)
+
 ## What is reproducible research?
 
 * Interlaced code, data (**Raw**) and text
@@ -415,6 +420,10 @@ crosstalk::filter_slider("Abundance", "Abundance", sd, ~Abundance, step = 10, ro
 
 * More on the [crosstalk webpage](https://rstudio.github.io/crosstalk/index.html)
 
+## Why do you want to use crosstalk (Example)
+
+Lets see in this [link](http://rstudio-pubs-static.s3.amazonaws.com/900117_9501a47c51434198b833b0e7321272c1.html)
+
 ## Activity 3
 
 Check the template in this [link](https://raw.githubusercontent.com/derek-corcoran-barrios/OikosRepoducibleResearch/master/02-Interactive_document/TemplateInteractive.Rmd) and:
@@ -427,4 +436,33 @@ Check the template in this [link](https://raw.githubusercontent.com/derek-corcor
 # Part 3 Reusing code for presentations and PDFs
 
 ## How to reuse code
+
+* To reuse code we need a script with the code commented as follows
+
+```{r, echo = T, eval=FALSE}
+## ---- read-dataset --------
+Species <- read_csv("https://raw.githubusercontent.com/derek-corcoran-barrios/OikosRepoducibleResearch/master/Species.csv")
+
+## ---- species2 --------
+
+Species2 <- Species %>%
+  pivot_longer(cols = abund_sp1:abund_sp4, names_to = "Species", values_to = "Abundance") %>% mutate(Species = str_remove_all(Species, "abund_"), Species =str_replace_all(Species, "sp", "Spp "))
+
+```
+
+## Lets use our templates
+
+* You can find all needed templates [here](https://github.com/derek-corcoran-barrios/OikosRepoducibleResearch/tree/master/03-Reusecode)
+* The file `ReusableChunks.R` has the chunks needed to run the code
+* Every rmd needs to have the following code
+
+```{r, echo = T, eval=FALSE}
+knitr::read_chunk('ReusableChunks.R')
+```
+* Modify the document `ReuseDocument.Rmd` and `ReusableChunks.R`, to include models, and predictions
+* Fix the issue in `ReuseDocument.Rmd` to get the crossreference of the figure to work
+* Try to generate a coherent presentation
+* Lets work until we are finished
+
+# Thank you
 
