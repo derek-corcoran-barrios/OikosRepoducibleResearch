@@ -25,6 +25,21 @@ sd <- SharedData$new(Species2)
 crosstalk::filter_checkbox("Species", "Species", sd, ~Species)
 crosstalk::filter_slider("Abundance", "Abundance", sd, ~Abundance, step = 10, round = T, min = min(Species2$Abundance), max = max(Species2$Abundance))
 
+Numpal <- colorNumeric("viridis", sort(unique(Species2$Abundance)))
+
+
+leaflet(sd) %>%
+  addTiles() %>% 
+  leaflet::addCircles(lng = ~lon, lat = ~lat, color = ~Numpal(Abundance), popup = ~paste("Abundance:", prettyNum(Abundance, big.mark = ",")), label = ~paste("Abundance:", prettyNum(Abundance, big.mark = ","))) %>%  addLegend("bottomright", pal = Numpal, values = ~Abundance,
+    title = "Abundance",
+    labFormat = labelFormat(big.mark =","),
+    opacity = 1
+  )
+
+G <- ggplot(sd, aes(x = bio_12, y = Abundance)) + geom_point(aes(color = Species)) + theme_bw()
+
+ggplotly(G)
+
 DT::datatable(sd, extensions = c('Buttons', 'ColReorder'),
           caption = 'Species abundances and explaining variables.',
             filter = "top",
@@ -38,6 +53,8 @@ DT::datatable(sd, extensions = c('Buttons', 'ColReorder'),
     formatRound(columns=c("lon", "lat", "bio_1", "bio_2", "bio_3", "bio_4", "bio_5", 
 "bio_6", "bio_7", "bio_8", "bio_9", "bio_10", "bio_11", "bio_12", 
 "bio_13", "bio_14", "bio_15", "bio_16", "bio_17", "bio_18", "bio_19"), digits=3)
+
+
 ```
 
 

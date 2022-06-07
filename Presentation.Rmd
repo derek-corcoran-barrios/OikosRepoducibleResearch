@@ -387,11 +387,14 @@ p
 
 ## Basics of leaflet
 
+* Get more at the [leaflet webpage](https://rstudio.github.io/leaflet/)
+
 ```{r}
 leaflet(data = Species) %>% 
   addTiles() %>% 
   addCircles(lng = ~lon, lat =~lat)
 ```
+
 
 ## Basics of crosswalk
 
@@ -404,12 +407,19 @@ sd <- SharedData$new(Species2)
 
 ## Generate filters
 
-```{r, echo = T}
+```{r, echo = T, eval = FALSE}
 crosstalk::filter_checkbox("Species", "Species", sd, ~Species)
 crosstalk::filter_slider("Abundance", "Abundance", sd, ~Abundance, step = 10, round = T, min = min(Species2$Abundance), max = max(Species2$Abundance))
 
 ```
 
-## And widgets
+* More on the [crosstalk webpage](https://rstudio.github.io/crosstalk/index.html)
 
-Check the template in 
+## Activity 3
+
+Check the template in this [link](https://raw.githubusercontent.com/derek-corcoran-barrios/OikosRepoducibleResearch/master/02-Interactive_document/TemplateInteractive.Rmd) and:
+
+* Add to your report with interactive widgets and if you feel that it helps with your crosswalk.
+* Try with the prior exploration, and variables you feel are important, to allow the user (advisor, colleague, co-author, etc.), To help you explore the relationships.
+* When you are ready lets publish to [rpubs](https://rpubs.com/)
+* Dont forget to push to github
