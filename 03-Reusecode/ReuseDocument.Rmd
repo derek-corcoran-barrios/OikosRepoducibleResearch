@@ -1,0 +1,45 @@
+---
+title: "Untitled"
+author: "Some author"
+date: "`r format(Sys.time(), '%d/%m, %Y')`"
+output:
+  bookdown::html_document2:
+    fig_caption: true
+    toc: false
+bibliography: biblio.bib
+---
+
+# Introduction
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = F, message = F)
+library(tidyverse)
+library(kableExtra)
+library(DT)
+library(plotly)
+knitr::read_chunk('ReusableChunks.R')
+```
+
+```{r read-dataset, echo=FALSE}
+
+```
+
+The dataset we are using has `r nrow(Species)`, observations. You can explore the dataset in table \@ref(tab:datatable).
+
+
+```{r datatable, results="asis", echo=FALSE}
+
+```
+
+
+```{r species2}
+
+```
+
+We can see the relationship between anual precipitation and abundanca for all four species in \@ref(fig:Abundance)
+
+```{r Abundance}
+
+```
+
+# References

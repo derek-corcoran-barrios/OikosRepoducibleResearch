@@ -423,3 +423,8 @@ Check the template in this [link](https://raw.githubusercontent.com/derek-corcor
 * Try with the prior exploration, and variables you feel are important, to allow the user (advisor, colleague, co-author, etc.), To help you explore the relationships.
 * When you are ready lets publish to [rpubs](https://rpubs.com/)
 * Dont forget to push to github
+
+# Part 3 Reusing code for presentations and PDFs
+
+## How to reuse code
+
