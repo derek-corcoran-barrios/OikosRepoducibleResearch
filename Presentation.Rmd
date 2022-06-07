@@ -390,6 +390,62 @@ p <- plot_ly(Species, x = ~bio_1, y = ~abund_sp4, mode = "markers", name = "A", 
 p
 ```
 
+## Even animations and control
+
+```{r, echo = T, eval = F}
+library(gapminder)
+df <- gapminder 
+fig <- df %>%
+  plot_ly(x = ~gdpPercap, y = ~lifeExp, size = ~pop, color = ~continent, frame = ~year, text = ~country, hoverinfo = "text", type = 'scatter', mode = 'markers')
+
+fig <- fig %>% layout(
+    xaxis = list(
+      type = "log"
+    )
+  )
+
+fig
+```
+
+## The animation
+
+```{r, echo = F, eval = T}
+library(gapminder)
+df <- gapminder 
+fig <- df %>%
+  plot_ly(
+    x = ~gdpPercap, 
+    y = ~lifeExp, 
+    size = ~pop, 
+    color = ~continent, 
+    frame = ~year, 
+
+    text = ~country, 
+
+    hoverinfo = "text",
+
+    type = 'scatter',
+
+    mode = 'markers'
+
+  )
+
+fig <- fig %>% layout(
+
+    xaxis = list(
+
+      type = "log"
+
+    )
+
+  )
+
+
+fig
+
+```
+
+
 ## Basics of leaflet
 
 * Get more at the [leaflet webpage](https://rstudio.github.io/leaflet/)
