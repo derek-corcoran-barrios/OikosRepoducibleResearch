@@ -1,0 +1,54 @@
+---
+title: "Untitled"
+author: "Someone"
+date: "`r format(Sys.time(), '%d/%m, %Y')`"
+output:
+  ioslides_presentation:
+    widescreen: true
+    incremental: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, cache = FALSE, tidy = TRUE, tidy.opts = list(width.cutoff = 50))
+library(tidyverse)
+library(broom)
+library(kableExtra)
+library(crosstalk)
+library(leaflet)
+library(DT)
+library(plotly)
+library(downloadthis)
+knitr::read_chunk('ReusableChunks.R')
+options("kableExtra.html.bsTable" = T)
+```
+
+
+# Reusable slides
+
+## First slide
+
+```{r read-dataset, echo=FALSE}
+
+```
+
+* The dataset has `r nrow(Species)`
+
+
+```{r datatable, results="asis", echo=FALSE}
+
+```
+
+
+```{r species2}
+
+```
+
+## Slide 2 plot
+
+```{r Abundance}
+
+```
+
+* This plot is important
+
+^
